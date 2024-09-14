@@ -1,0 +1,4 @@
+Created a simulation to model batch bioreactors using differential equations. To simplify inputs, an excel file is provided to enter time to simulate, initial biomass, 
+initial substrate, initial product, miu-max, Ks monod value, Kd cell death rate, gamma product denaturation rate, X/S yield and P/X yield. These values can be in hours, but 
+values in minutes can be used for further accuracy. Using these factors, the program graphs the differential equations to model biomass,substrate and product concentratios,
+providing useful insights for bioprocess development.
