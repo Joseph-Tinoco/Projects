@@ -1,0 +1,4 @@
+I coded the ANOVA test almost from scratch, as I used only numpy for the algorithm, only employing scipy to obtain F fisher values. The ANOVA algorithm mentioned was coded mostly with
+for loops and nested for loops, providing an excellent sample of how to translate math and statistical algorithms to computer programming. 
+This program was adapted from a python script I made for an statistics class.I coded this project on my own (it wasn´t course work, I did it by myself!), so it is specially important
+for me, as it was my return to actually learning python programming and computer logic.
