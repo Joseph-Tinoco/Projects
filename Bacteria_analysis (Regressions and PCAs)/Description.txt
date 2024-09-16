@@ -1,0 +1,9 @@
+This was the second assignment in the Julian Mak´s data analysis course (Huge thanks again to him!). This time, we had to analyse a dataset containing biochemical and physicochemical data of ocean water 
+from Pivers Island Coastal Observatory, with the aim of determining whether or not there were differences between the water properties among seasons. To do this, I split the dataset between the corresponding seasons,
+and applied several statistical techniques to determine differences between the seasons, mainly hypothesis testing,regressions and principal component analysis (PCA).
+Here are some details about the analysis applied:
+Hypothesis testing: performed ANOVA and Z tests to determine statistically significant differences between values of a particular water property among different seasons, and performed TUKEY tests where appropiate.
+Regressions: found correlation matrixes and plotted the variables with most correlation to one another. Moreover, I applied RANSAC (RANdom Sample Concensus) regression to generate a best fit line while ignoring outlier data points.
+Dimensionality reduction: employed PCA and t-SNE to perform cluster analysis, finding clusters for each of the seasons .
+At the end it was found that there are seasonal profiles for water properties. Silicates, temperature and chlorophyll were the variables most correlated to bacterial density, leading to the conclussion that several factors change
+reflecting the season, leading to different water properties and changes in bacterial types and densities. 
