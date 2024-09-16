@@ -1,0 +1,5 @@
+This is the first assignment I did as part of Julian Mak's Data Analysis in Ocean Science course. I felt the need to upload my work here to showcase everything I learned under Mak´s brilliant teaching.
+This first assignment had to do with simulating populations in a habitat using a Leslie matrix. THis works by splitting the a single (or multiple species) into different age classes, and on each instance, the individuals
+in a given age class have a 'chance' of advancing to the next age class, a chance of dying, and a chance of producing offspring. In a sense, a Leslie matrix gives the population at time = t+1 using the population
+at time = t. I executed the model using a population of asian elephants, and with sauropod dinosaurs using a crafted Leslie matrix. Said models were visualized with animations in matplotlib and plotly, crafting population
+pyramids at any given time. The results were good but there were some space for improvement, like changing initial conditions or adding stochastic variation for example.
