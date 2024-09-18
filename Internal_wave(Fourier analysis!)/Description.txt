@@ -1,0 +1,3 @@
+Here is the showcase of the third assignment I did on professor Julien Mak´s class. It had to do with temperature internal ocean waves. Data was in .tab files, and an adequate function was defined to read this unusual format.
+Afterwards, trends were obtained, lag correlation coefficients were mapped out, and Fourier analysis was performed. Insights were that the combination of el niño phenomena and climate change were causing temperature swings
+that caused the environment to be inhospitable to coral reefs, increasing the frequency of coral bleaching events.
