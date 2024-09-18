@@ -1,0 +1,199 @@
+---
+title: "SARS_pandemics"
+output: html_notebook
+---
+
+# SARS-CoV pandemics analysis
+
+### SARS CoV 1
+
+In the present project I will analyse data from the SARS CoV pandemic and the SARS CoV2 pandemic. We will analyse total cases, death rates over time, total cases, and the differences between both viruses.
+
+First, I import the neccesary libraries and data:
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(RColorBrewer)
+Data <- read.csv("Data/sars_2003_complete_dataset_clean.csv")
+Data <- clean_names(Data)
+```
+
+Then analysis can be performed, grouping by country to get overall cases,deaths, recovered, and generate percentages of recovered people and mortality rates by country.
+
+```{r}
+Data_by_country <- Data %>%
+  group_by(country) %>%
+  summarise(number_of_cases=max(cumulative_number_of_case_s),
+            number_of_deaths=max(number_of_deaths),
+            num_recovered=max(number_recovered),
+            percent_recovered=round((num_recovered/number_of_cases)*100,2),
+            percent_death =round((number_of_deaths/number_of_cases)*100,2)) %>%
+  arrange(desc(number_of_cases))
+```
+
+And grouping by date will also be neccesary, obtaining cumulative cases, recovered, dead and mortality rate:
+
+```{r}
+Data_by_date <- Data %>%
+  group_by(date) %>%
+  summarise(total_cases = sum(cumulative_number_of_case_s),
+            total_deaths = sum(number_of_deaths),
+            total_recovered = sum(number_recovered)) %>%
+  mutate(date=ymd(date),percent_death = round((total_deaths / total_cases) * 100,2))
+```
+
+Plot time!
+
+```{r}
+ggplot(data = Data_by_date, aes(x = date, y = total_cases)) +
+  geom_line(color="Red",size=2) +
+  theme_bw()+
+  labs(x = "Date", y = "Total Cases",title="Total SARS-cov1 cases over time")
+```
+
+It can be observed that the infected countries managed to flatten the curve, resulting in a plateau in this cumulative case graph, showing that SARS CoV 1 was stopped because the amount of new cases was reduced. \
+Lets now observe the countries with the most cases:
+
+```{r}
+ggplot(data = arrange(Data_by_country, desc(number_of_cases))[1:6, ],
+       aes(x = reorder(country, -number_of_cases), y = number_of_cases, fill = country)) +
+  geom_col() +
+  geom_text(aes(label = number_of_cases), vjust = -0.5, size = 5) + 
+  theme_bw() +
+  labs(x = "Country", y = "Number of Cases",title="SARS-Cov1 cases",subtitle="countries with the most cases") +
+  scale_fill_discrete(name = "Country")+
+  scale_fill_brewer(palette = "Reds")
+```
+
+It is observable that China, Hong Kong and Taiwan were the places most affected, but some cases did make it to other countries like Canada, United States, etc.\
+Likewise, here are the countries with most deaths, almost the same list:
+
+```{r}
+ggplot(data = arrange(Data_by_country, desc(number_of_deaths))[1:6, ],
+       aes(x = reorder(country, -number_of_deaths), y = number_of_deaths, fill = country)) +
+  geom_col() +
+  geom_text(aes(label = number_of_deaths), vjust = -0.5, size = 5) + 
+  theme_bw() +
+  labs(x = "Country", y = "Number of deaths",title="SARS-Cov1 deaths",subtitle="countries with the most deaths") +
+  scale_fill_discrete(name = "Country")+
+  scale_fill_brewer(palette = "Reds")
+```
+
+China and the surroundings were the most affected places, lets observe the data from those places:
+
+```{r}
+Data_by_date_china <- Data %>%
+  filter(grepl("China|Hong Kong SAR,China|Taiwan", country)) %>%
+  group_by(date) %>%
+  summarise(total_cases = sum(cumulative_number_of_case_s),
+            total_deaths = sum(number_of_deaths),
+            total_recovered = sum(number_recovered)) %>%
+  mutate(date=ymd(date),percent_death = round((total_deaths / total_cases) * 100,2))
+```
+
+```{r}
+ggplot(data = Data_by_date_china, aes(x = date, y = total_cases)) +
+  geom_line(color="Red",size=2) +
+  theme_bw()+
+  labs(x = "Date", y = "Total Cases",title="Total SARS-cov1 cases in China,Hong Kong, Taiwan and Macau over time")
+```
+
+Most of the 8000 cases of the virus centered on that area. Lets observe the mortality rate across time:
+
+```{r}
+ggplot(data = Data_by_date, aes(x = date, y = percent_death)) +
+  geom_line(color="Red",size=2) +
+  theme_bw()+
+  labs(x = "Date", y = "Mortality",title="Mortality rate over time SARS cov1")
+y <- c(Data_by_date[nrow(Data_by_date), 'percent_death'])
+```
+
+This result is very interesting, as it shows that mortality rose over time without stopping, possibly indicating that the virus killed too much, perhaps burning itself out, as it killed its hosts without infecting enough new people.
+
+### SARS CoV 2 (COVID 19)
+
+Lets proceed now to SARS CoV 1 ´s cousin, the recent causer of the pandemic. A similar grouping function will be performed, grouping by country, income bracket and dates:
+
+```{r}
+Data <- read_csv("Data/covid-data.csv")
+Data_by_country <- Data %>%
+  group_by(location) %>%
+  summarise(
+    number_of_cases = ifelse(all(is.na(total_cases)), 0, max(total_cases, na.rm = TRUE)),
+    number_of_deaths = ifelse(all(is.na(total_deaths)), 0, max(total_deaths, na.rm = TRUE)),
+    percent_death = round((number_of_deaths / number_of_cases) * 100, 2)
+  ) %>%
+  arrange(desc(number_of_cases))
+Data_by_income <- Data_by_country %>%
+  filter(grepl("income", location))
+Data_by_date <- Data %>%
+  group_by(date) %>%
+  summarise(total_cases = ifelse(all(is.na(total_cases)), 0, max(total_cases, na.rm = TRUE)),
+            total_deaths = ifelse(all(is.na(total_deaths)), 0, max(total_deaths, na.rm = TRUE)),
+            percent_death = round((total_deaths / total_cases) * 100,2))
+Data_by_date <- Data_by_date[6:1394, ]
+```
+
+Lets observe total cases, as SARS CoV 2 was very contagious:
+
+```{r}
+ggplot(data = Data_by_date, aes(x = date, y = total_cases)) +
+  geom_line(color="Purple",size=2) +
+  theme_bw()+
+  labs(x = "Date", y = "Total Cases",title="Total cases over time Covid 19")
+```
+
+Maximum infected were close to 800 million !
+
+Lets look at deaths:
+
+```{r}
+ggplot(data = Data_by_date, aes(x = date, y = total_deaths)) +
+  geom_line(color="Purple",size=2) +
+  theme_bw()+
+  labs(x = "Date", y = "Total deaths",title="Total deaths over time Covid 19")
+```
+
+Also a big amount, around 6 million, even with small mortality rates, pathogens can prove deadly if they are contagious enough.
+
+Lets observe mortality rate over time:
+
+```{r}
+ggplot(data = Data_by_date[7:1389,], aes(x = date, y = percent_death)) +
+  geom_line(color="Purple",size=2) +
+  theme_bw()+
+  labs(x = "Date", y = "% of deaths",title="Death % over time Covid 19")
+```
+
+This graph illustrates a theoretical pattern of epidemic-causing pathogens, where they start out as highly deadly strains, but their mortality rate decreases as they evolve into less deadly versions and society adapts to curb down their mortality. This pattern happens twice, first mortality dipped below 2.5 %, but afterward it rose again, probably rising again with the virus spreading around the world, only for the mortality to decrease again as the world adapts, vaccines are developed and the virus burns itself out.
+
+Another pattern is that lower income brackets get more affected by pandemics:
+
+```{r}
+ggplot(data = Data_by_income,
+       aes(x = location, y = percent_death, fill = location)) +
+  geom_col() +
+  geom_text(aes(label = percent_death), vjust = -0.5, size = 5) + 
+  theme_bw() +
+  labs(x = "Socioeconomic situation", y = "% of deaths",title="Covid 19 mortality rates",subtitle="by socioeconomic situation") +
+  scale_fill_brewer(palette = "PRGn")
+```
+
+HIgh income people had mortality rates of less than 1%, while everyone else had it over that threshold, showing that socioeconomic background can have great impacts in crisis like these.
+
+Lastly, lets compare mortality rates of both viruses:
+
+```{r}
+x <- c("SARS COV 1","SARS COV 2")
+y <- append(y,Data_by_date[nrow(Data_by_date), 'percent_death'])
+final_data <- data.frame(virus = x, mortality = unlist(y))
+ggplot(data = final_data,
+       aes(x = virus, y = mortality, fill = virus)) +
+  geom_col() +
+  geom_text(aes(label = mortality), vjust = -0.3) +
+  theme_bw() +
+  labs(y = "Mortality",title="Mortality rates of SARS Cov viruses") 
+```
+
+The main difference can be observed here, that the SARS CoV 2 virus is nearly 10 times less deadly than its counterpart. However, these viruses are some of the most dangerous, as their low mortality and high infectivity allow them to spread quickly and cause havoc in a population even if their mortality rates are small in paper.
