@@ -1,0 +1,6 @@
+This is the last assignment I did on Julien Mak´s Ocean Data Analysis course. In it, I analyzed data related to el niño phenomena and its variants. Weather patterns were found through the use of empirical orthogonal functions (EOFs),
+and analyzed through Fourier analysis. El niño patterns were categorized into canonical el niño and el niño modokis, and said signals were filtered to avoid gyre and climate change data. The frequencies of each phenomena
+were also found, giving greater insight into weather patterns in the Pacific.
+The data was uploaded to Google Drive, as it was too large for GitHub:
+Dataset    https://drive.google.com/file/d/1Nx_GrQDyfUdG21nZttslLFeArW3LyH5z/view?usp=sharing
+Supporting images and a GIF    https://drive.google.com/file/d/1y7zvqMPHOyG0UOQvdSj2o83H0IIVaxjU/view?usp=sharing
