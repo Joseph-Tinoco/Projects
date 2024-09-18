@@ -1,0 +1,4 @@
+This is the final project I did for Ushio Masayuki´s Data visualization class. It was about taking aa dataset from a paper , and reproducing the most complex figure from it. I chose a paper about beverages consumption worldwide
+(citation in the material), and the data was available in pdf format, so a long data cleaning step was required. Moreover, the figure I wanted to make was a map, so I needed map geometries and geopandas, so I generated a map json
+file (citation in material) , which I needed to merge with the beverages dataset, and lastly I also merged it with a GDP dataset for additional data. Finally, I made several figures, including animations using matplotlib.animation,
+and I finally made the map graphing milk, sugar sweetened beverages and fruit juices. 
