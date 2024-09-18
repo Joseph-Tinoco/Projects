@@ -1,0 +1,1 @@
+Using publically available data, I did an analysis comparing the SARS CoV1 and SARS CoV2 pandemics, observing their parameters and contrasting between them, observing the qualities of each virus.
